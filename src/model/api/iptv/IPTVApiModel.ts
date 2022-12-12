@@ -4,6 +4,7 @@ import { inject, injectable } from 'inversify';
 import * as apid from '../../../../api';
 import Program from '../../../db/entities/Program';
 import DateUtil from '../../../util/DateUtil';
+import GenreUtil from '../../../util/GenreUtil';
 import IChannelDB from '../../db/IChannelDB';
 import IProgramDB from '../../db/IProgramDB';
 import IIPTVApiModel from './IIPTVApiModel';
@@ -119,6 +120,13 @@ class IPTVApiModel implements IIPTVApiModel {
                 str += `<title lang="ja_JP">${program.name}</title>`;
                 if (program.description !== null) {
                     str += `    <desc lang="ja_JP">${program.description}</desc>`;
+                }
+                if (program.genre1 !== null) {
+                    if (program.subGenre1 !== null) {
+                        str += `<category lang="ja_JP">${GenreUtil.getGenres(program.genre1, program.subGenre1)}</category>`;
+                    } else {
+                        str += `<category lang="ja_JP">${GenreUtil.getGenre(program.genre1)}</category>`;
+                    }
                 }
                 str += '</programme>';
             }
